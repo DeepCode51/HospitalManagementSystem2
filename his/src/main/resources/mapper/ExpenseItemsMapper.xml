@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.neu.hoso.model.ExpenseItemsMapper" >
+  <resultMap id="BaseResultMap" type="edu.neu.hoso.model.ExpenseItems" >
+    <constructor >
+      <idArg column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Medical_Record_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Total_Cost" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="Pay_Status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="Invoice_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Expense_Type_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Expense_Items_ID, Medical_Record_ID, Total_Cost, Pay_Status, Invoice_ID, Expense_Type_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.neu.hoso.example.ExpenseItemsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from expense_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="edu.neu.hoso.example.ExpenseItemsExample" >
+    delete from expense_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insertSelective" parameterType="edu.neu.hoso.model.ExpenseItems" >
+    <selectKey resultType="java.lang.Integer" keyProperty="expenseItemsId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into expense_items
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="medicalRecordId != null" >
+        Medical_Record_ID,
+      </if>
+      <if test="totalCost != null" >
+        Total_Cost,
+      </if>
+      <if test="payStatus != null" >
+        Pay_Status,
+      </if>
+      <if test="invoiceId != null" >
+        Invoice_ID,
+      </if>
+      <if test="expenseTypeId != null" >
+        Expense_Type_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="medicalRecordId != null" >
+        #{medicalRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="totalCost != null" >
+        #{totalCost,jdbcType=DOUBLE},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="invoiceId != null" >
+        #{invoiceId,jdbcType=INTEGER},
+      </if>
+      <if test="expenseTypeId != null" >
+        #{expenseTypeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.neu.hoso.example.ExpenseItemsExample" resultType="java.lang.Integer" >
+    select count(*) from expense_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update expense_items
+    <set >
+      <if test="record.expenseItemsId != null" >
+        Expense_Items_ID = #{record.expenseItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.medicalRecordId != null" >
+        Medical_Record_ID = #{record.medicalRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalCost != null" >
+        Total_Cost = #{record.totalCost,jdbcType=DOUBLE},
+      </if>
+      <if test="record.payStatus != null" >
+        Pay_Status = #{record.payStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.invoiceId != null" >
+        Invoice_ID = #{record.invoiceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.expenseTypeId != null" >
+        Expense_Type_ID = #{record.expenseTypeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update expense_items
+    set Expense_Items_ID = #{record.expenseItemsId,jdbcType=INTEGER},
+      Medical_Record_ID = #{record.medicalRecordId,jdbcType=INTEGER},
+      Total_Cost = #{record.totalCost,jdbcType=DOUBLE},
+      Pay_Status = #{record.payStatus,jdbcType=CHAR},
+      Invoice_ID = #{record.invoiceId,jdbcType=INTEGER},
+      Expense_Type_ID = #{record.expenseTypeId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.neu.hoso.model.ExpenseItems" >
+    update expense_items
+    <set >
+      <if test="medicalRecordId != null" >
+        Medical_Record_ID = #{medicalRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="totalCost != null" >
+        Total_Cost = #{totalCost,jdbcType=DOUBLE},
+      </if>
+      <if test="payStatus != null" >
+        Pay_Status = #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="invoiceId != null" >
+        Invoice_ID = #{invoiceId,jdbcType=INTEGER},
+      </if>
+      <if test="expenseTypeId != null" >
+        Expense_Type_ID = #{expenseTypeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Expense_Items_ID = #{expenseItemsId,jdbcType=INTEGER}
+  </update>
+
+  <select id="getUnWithdrawExpenseItems" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM expense_items
+  NATURAL JOIN invoice
+    WHERE
+  Invoice_NO = #{invoiceNO}
+  AND Pay_Status = "2"
+  </select>
+
+  <!--患者费用项目结果集 @Mike 2019.6.18-->
+  <resultMap id="PatientExpenseItemsResultMap" type="edu.neu.hoso.model.ExpenseItems" >
+      <id column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="expenseItemsId"/>
+      <result column="Medical_Record_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="medicalRecordId"/>
+      <result column="E_Total_Cost" jdbcType="DOUBLE" javaType="java.lang.Double" property="totalCost"/>
+      <result column="Pay_Status" jdbcType="CHAR" javaType="java.lang.String" property="payStatus"/>
+      <association property="invoice" javaType="Invoice">
+        <id column="Invoice_ID" property="invoiceId" />
+        <result column="Invoice_NO" property="invoiceNo" />
+        <result column="Is_Day_Cal" property="isDayCal" />
+        <result column="Pay_Time" property="payTime" />
+      </association>
+      <association property="expenseType" javaType="ExpenseType">
+        <id column="Expense_Type_ID" property="expenseTypeId" />
+        <result column="Expense_Type_Name" property="expenseTypeName" />
+      </association>
+      <association property="drugs" javaType="Drugs">
+        <id column="Drugs_ID" property="drugsId" />
+        <result column="Drugs_Name" property="drugsName" />
+      </association>
+      <association property="fmedicalItems" javaType="FmedicalItems">
+        <id column="Fmedical_Items_ID" property="fmedicalItemsId" />
+        <result column="Fmedical_Items_Name" property="fmedicalItemsName" />
+      </association>
+  </resultMap>
+
+  <!--查询患者未收费项目 @Mike 2019.6.18-->
+  <select id="getPatientUnPayExpenseItems" resultMap="PatientExpenseItemsResultMap" parameterType="java.lang.Integer" >
+    SELECT
+        drugs.Drugs_Name,
+        fmedical_items.Fmedical_Items_Name,
+        expense_items.Total_Cost as E_Total_Cost,
+        Pay_Status,
+        Expense_Type_Name
+    FROM
+        expense_items
+        NATURAL JOIN expense_type
+        JOIN ( prescription_items JOIN drugs ON prescription_items.Drags_ID = drugs.Drugs_ID ) ON prescription_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        JOIN ( treatment_items JOIN fmedical_items ON treatment_items.Fmedical_Items_ID = fmedical_items.Fmedical_Items_ID ) ON treatment_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        JOIN examination_fmedical_items ON examination_fmedical_items.Examination_Fmedical_Items_ID = fmedical_items.Fmedical_Items_ID AND examination_fmedical_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        JOIN examination_drugs_items ON examination_drugs_items.Drugs_ID = drugs.Drugs_ID AND examination_drugs_items.Expense_Items_ID = expense_items.Expense_Items_ID
+    WHERE
+        expense_items.Medical_Record_ID = #{medicalRecordId}
+        AND expense_items.Pay_Status = 1
+  </select>
+  
+  <!--查询患者已收费项目 @Mike 2019.6.18-->
+  <select id="getPatientPayExpenseItems" resultMap="PatientExpenseItemsResultMap">
+    SELECT
+        drugs.Drugs_Name,
+        fmedical_items.Fmedical_Items_Name,
+        expense_items.Total_Cost as E_Total_Cost,
+        Pay_Status,
+        Expense_Type_Name,
+        Invoice_NO
+    FROM
+        expense_items
+        NATURAL JOIN expense_type
+        JOIN invoice ON expense_items.Invoice_ID = invoice.Invoice_ID
+        JOIN ( prescription_items JOIN drugs ON prescription_items.Drags_ID = drugs.Drugs_ID ) ON prescription_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        JOIN ( treatment_items JOIN fmedical_items ON treatment_items.Fmedical_Items_ID = fmedical_items.Fmedical_Items_ID ) ON treatment_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        JOIN examination_fmedical_items ON examination_fmedical_items.Examination_Fmedical_Items_ID = fmedical_items.Fmedical_Items_ID AND examination_fmedical_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        JOIN examination_drugs_items ON examination_drugs_items.Drugs_ID = drugs.Drugs_ID AND examination_drugs_items.Expense_Items_ID = expense_items.Expense_Items_ID
+    WHERE
+        expense_items.Medical_Record_ID = #{medicalRecordId}
+        AND Registration_Status = 1
+        AND medical_record.Is_Treament_Over = 1
+        AND expense_items.Pay_Status = 2
+        AND invoice.Pay_Time BETWEEN startDate AND endDate
+    ORDER BY
+        Pay_Time DESC
+  </select>
+
+
+  <!--费用项目最全结果集 @Mike 2019.6.30-->
+  <resultMap id="ExpenseItemsResultMap" type="edu.neu.hoso.model.ExpenseItems" >
+    <id column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="expenseItemsId"/>
+    <result column="Medical_Record_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="medicalRecordId"/>
+    <result column="Total_Cost" jdbcType="DOUBLE" javaType="java.lang.Double" property="totalCost"/>
+    <result column="Pay_Status" jdbcType="CHAR" javaType="java.lang.String" property="payStatus"/>
+    <result column="E_Invoice_ID" property="invoiceId" />
+    <association property="invoice" javaType="Invoice">
+      <id column="Invoice_ID" property="invoiceId" />
+      <result column="Invoice_NO" property="invoiceNo" />
+      <result column="Is_Day_Cal" property="isDayCal" />
+      <result column="Pay_Time" property="payTime" />
+    </association>
+    <association property="expenseType" javaType="ExpenseType">
+      <id column="Expense_Type_ID" property="expenseTypeId" />
+      <result column="Expense_Type_Name" property="expenseTypeName" />
+    </association>
+    <association property="drugs" javaType="Drugs">
+      <id column="Drugs_ID" property="drugsId" />
+      <result column="Drugs_Name" property="drugsName" />
+      <result column="Drugs_Price" property="drugsPrice" />
+    </association>
+    <association property="exDrugs" javaType="Drugs">
+          <id column="Ex_Drugs_ID" property="drugsId" />
+          <result column="Ex_Drugs_Name" property="drugsName" />
+          <result column="Ex_Drugs_Price" property="drugsPrice" />
+    </association>
+    <association property="prescriptionItems" javaType="PrescriptionItems">
+      <id column="Prescription_Items_ID" property="prescriptionItemsId" />
+      <result column="P_Quantity" property="quantity" />
+      <result column="P_Actual_Quantity" property="actualQuantity" />
+    </association>
+    <association property="fmedicalItems" javaType="FmedicalItems">
+      <id column="Fmedical_Items_ID" property="fmedicalItemsId" />
+      <result column="Fmedical_Items_Name" property="fmedicalItemsName" />
+    </association>
+      <association property="exFmedicalItems" javaType="FmedicalItems">
+          <id column="Ex_Fmedical_Items_ID" property="fmedicalItemsId" />
+          <result column="Ex_Fmedical_Items_Name" property="fmedicalItemsName" />
+      </association>
+    <association property="treatmentItems" javaType="TreatmentItems">
+      <id column="Treatment_Items_ID" property="treatmentItemsId" />
+      <result column="T_Quantity" property="quantity" />
+      <result column="T_Actual_Quantity" property="actualQuantity" />
+    </association>
+    <association property="examinationDrugsItems" javaType="ExaminationDrugsItems">
+      <id column="Examination_Drugs_Items_ID" property="examinationDrugsItemsId" />
+      <result column="E_D_Quantity" property="quantity" />
+      <result column="E_D_Actual_Quantity" property="actualQuantity" />
+    </association>
+    <association property="examinationFmedicalItems" javaType="ExaminationFmedicalItems">
+      <id column="Examination_Fmedical_Items_ID" property="examinationFmedicalItemsId" />
+      <result column="E_F_Quantity" property="quantity" />
+      <result column="E_F_Actual_Quantity" property="actualQuantity" />
+    </association>
+  </resultMap>
+
+  <!--查询所有收费项目 @Mike 2019.6.30-->
+  <select id="getAllExpenseItems" resultMap="ExpenseItemsResultMap">
+    SELECT
+        drugs.Drugs_ID,
+        drugs.Drugs_Name,
+        drugs.Drugs_Price,
+        ex_drugs.Drugs_ID AS Ex_Drugs_ID,
+        ex_drugs.Drugs_Name AS Ex_Drugs_Name,
+        ex_drugs.Drugs_Price AS Ex_Drugs_Price,
+        prescription_items.Prescription_Items_ID,
+        prescription_items.Quantity AS P_Quantity,
+        prescription_items.Actual_Quantity AS P_Actual_Quantity,
+        fmedical_items.Fmedical_Items_ID,
+        fmedical_items.Fmedical_Items_Name,
+        ex_fmedical_items.Fmedical_Items_ID AS Ex_Fmedical_Items_ID,
+        ex_fmedical_items.Fmedical_Items_Name AS Ex_Fmedical_Items_Name,
+        treatment_items.Treatment_Items_ID,
+        treatment_items.Quantity AS T_Quantity,
+        treatment_items.Actual_Quantity AS T_Actual_Quantity,
+        examination_fmedical_items.Examination_Fmedical_Items_ID,
+        examination_fmedical_items.Quantity AS E_F_Quantity,
+        examination_fmedical_items.Actual_Quantity AS E_F_Actual_Quantity,
+        examination_drugs_items.Examination_Drugs_Items_ID,
+        examination_drugs_items.Quantity AS E_D_Quantity,
+        examination_drugs_items.Actual_Quantity AS E_D_Actual_Quantity,
+        expense_items.Expense_Items_ID,
+        expense_items.Medical_Record_ID,
+        expense_items.Total_Cost,
+        expense_items.Invoice_ID AS E_Invoice_ID,
+        Pay_Status,
+        invoice.Invoice_ID,
+        invoice.Invoice_NO,
+        expense_type.Expense_Type_ID,
+        expense_type.Expense_Type_Name
+    FROM
+        expense_items
+        NATURAL JOIN expense_type
+        LEFT JOIN ( ( prescription_items JOIN prescription ON prescription_items.Prescription_ID = prescription.Prescription_ID ) JOIN drugs ON prescription_items.Drags_ID = drugs.Drugs_ID ) ON prescription_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN ( treatment_items JOIN fmedical_items ON treatment_items.Fmedical_Items_ID = fmedical_items.Fmedical_Items_ID ) ON treatment_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN ( examination_fmedical_items JOIN fmedical_items AS ex_fmedical_items ON examination_fmedical_items.Fmedical_Items_ID = ex_fmedical_items.Fmedical_Items_ID ) ON examination_fmedical_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN ( ( examination_drugs_items JOIN examination_fmedical_items AS drugs_examination_fmedical_items ON examination_drugs_items.Examination_Fmedical_Items_ID = drugs_examination_fmedical_items.Examination_Fmedical_Items_ID) JOIN drugs AS ex_drugs ON examination_drugs_items.Drugs_ID = ex_drugs.Drugs_ID ) ON examination_drugs_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN invoice ON expense_items.Invoice_ID = invoice.Invoice_ID
+    WHERE
+        ( prescription.Valid_Status = 1 OR treatment_items.Valid_Status = 1 OR examination_fmedical_items.Valid_Status = 1 OR drugs_examination_fmedical_items.Valid_Status = 1)
+        AND ( invoice.Is_Day_Cal = 1 OR invoice.Is_Day_Cal IS NULL )
+  </select>
+    <!--    添加病历号参数，实现对患者所有费用的查询-->
+    <select id="getPatientExpenseItems" resultMap="ExpenseItemsResultMap"  parameterType="java.lang.Integer">
+    SELECT
+        drugs.Drugs_ID,
+        drugs.Drugs_Name,
+        ex_drugs.Drugs_ID AS Ex_Drugs_ID,
+        ex_drugs.Drugs_Name AS Ex_Drugs_Name,
+        prescription_items.Prescription_Items_ID,
+        prescription_items.Quantity AS P_Quantity,
+        prescription_items.Actual_Quantity AS P_Actual_Quantity,
+        fmedical_items.Fmedical_Items_ID,
+        fmedical_items.Fmedical_Items_Name,
+        ex_fmedical_items.Fmedical_Items_ID AS Ex_Fmedical_Items_ID,
+        ex_fmedical_items.Fmedical_Items_Name AS Ex_Fmedical_Items_Name,
+        treatment_items.Treatment_Items_ID,
+        treatment_items.Quantity AS T_Quantity,
+        treatment_items.Actual_Quantity AS T_Actual_Quantity,
+        examination_fmedical_items.Examination_Fmedical_Items_ID,
+        examination_fmedical_items.Quantity AS E_F_Quantity,
+        examination_fmedical_items.Actual_Quantity AS E_F_Actual_Quantity,
+        examination_drugs_items.Examination_Drugs_Items_ID,
+        examination_drugs_items.Quantity AS E_D_Quantity,
+        examination_drugs_items.Actual_Quantity AS E_D_Actual_Quantity,
+        expense_items.Expense_Items_ID,
+        expense_items.Medical_Record_ID,
+        expense_items.Total_Cost,
+        Pay_Status,
+        invoice.Invoice_ID,
+        invoice.Invoice_NO,
+        expense_type.Expense_Type_ID,
+        expense_type.Expense_Type_Name
+    FROM
+        expense_items
+        NATURAL JOIN expense_type
+        LEFT JOIN ( ( prescription_items JOIN prescription ON prescription_items.Prescription_ID = prescription.Prescription_ID ) JOIN drugs ON prescription_items.Drags_ID = drugs.Drugs_ID ) ON prescription_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN ( treatment_items JOIN fmedical_items ON treatment_items.Fmedical_Items_ID = fmedical_items.Fmedical_Items_ID ) ON treatment_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN ( examination_fmedical_items JOIN fmedical_items AS ex_fmedical_items ON examination_fmedical_items.Fmedical_Items_ID = ex_fmedical_items.Fmedical_Items_ID ) ON examination_fmedical_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN ( ( examination_drugs_items JOIN examination_fmedical_items AS drugs_examination_fmedical_items ON examination_drugs_items.Examination_Fmedical_Items_ID = drugs_examination_fmedical_items.Examination_Fmedical_Items_ID) JOIN drugs AS ex_drugs ON examination_drugs_items.Drugs_ID = ex_drugs.Drugs_ID ) ON examination_drugs_items.Expense_Items_ID = expense_items.Expense_Items_ID
+        LEFT JOIN invoice ON expense_items.Invoice_ID = invoice.Invoice_ID
+    WHERE
+        ( prescription.Valid_Status = 1 OR treatment_items.Valid_Status = 1 OR examination_fmedical_items.Valid_Status = 1 OR drugs_examination_fmedical_items.Valid_Status = 1)
+        AND ( invoice.Is_Day_Cal = 1 OR invoice.Is_Day_Cal IS NULL ) AND expense_items.Medical_Record_ID = #{medicalRecordId}
+  </select>
+
+</mapper>

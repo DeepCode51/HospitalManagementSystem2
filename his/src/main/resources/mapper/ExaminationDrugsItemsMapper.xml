@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.neu.hoso.model.ExaminationDrugsItemsMapper" >
+  <resultMap id="BaseResultMap" type="edu.neu.hoso.model.ExaminationDrugsItems" >
+    <constructor >
+      <idArg column="Examination_Drugs_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Drugs_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Doctor_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Drugs_Usage" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Actual_Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Drugs_Dispensing_Status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Times" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Days" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Dosage" jdbcType="DOUBLE" javaType="java.lang.Double" />
+    </constructor>
+  </resultMap>
+
+  <!--  添加药品对象的ResultMap by @29-y 2019.06.18 -->
+  <resultMap id="SecondResultMap" type="edu.neu.hoso.model.ExaminationDrugsItems">
+    <id property="examinationDrugsItemsId" column="Examination_Drugs_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="examinationFmedicalItemsId" column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="drugsId" column="Drugs_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="doctorId" column="Doctor_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="drugsUsage" column="Drugs_Usage" jdbcType="CHAR" javaType="java.lang.String" />
+    <result property="quantity" column="Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="actualQuantity" column="Actual_Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="drugsDispensingStatus" column="Drugs_Dispensing_Status" jdbcType="CHAR" javaType="java.lang.String" />
+    <result property="expenseItemsId" column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="times" column="Times" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="days" column="Days" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="dosage" column="Dosage" jdbcType="DOUBLE" javaType="java.lang.Double" />
+    <association property="drugs" javaType="edu.neu.hoso.model.Drugs" resultMap="edu.neu.hoso.model.DrugsMapper.BaseResultMap"/>
+  </resultMap>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Examination_Drugs_Items_ID, Examination_Fmedical_Items_ID, Drugs_ID, Doctor_ID, Drugs_Usage, 
+    Quantity, Actual_Quantity, Drugs_Dispensing_Status, Expense_Items_ID, Times, Days, 
+    Dosage
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.neu.hoso.example.ExaminationDrugsItemsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from examination_drugs_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="edu.neu.hoso.example.ExaminationDrugsItemsExample" >
+    delete from examination_drugs_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insertSelective" parameterType="edu.neu.hoso.model.ExaminationDrugsItems" >
+    <selectKey resultType="java.lang.Integer" keyProperty="examinationDrugsItemsId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into examination_drugs_items
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="examinationFmedicalItemsId != null" >
+        Examination_Fmedical_Items_ID,
+      </if>
+      <if test="drugsId != null" >
+        Drugs_ID,
+      </if>
+      <if test="doctorId != null" >
+        Doctor_ID,
+      </if>
+      <if test="drugsUsage != null" >
+        Drugs_Usage,
+      </if>
+      <if test="quantity != null" >
+        Quantity,
+      </if>
+      <if test="actualQuantity != null" >
+        Actual_Quantity,
+      </if>
+      <if test="drugsDispensingStatus != null" >
+        Drugs_Dispensing_Status,
+      </if>
+      <if test="expenseItemsId != null" >
+        Expense_Items_ID,
+      </if>
+      <if test="times != null" >
+        Times,
+      </if>
+      <if test="days != null" >
+        Days,
+      </if>
+      <if test="dosage != null" >
+        Dosage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="examinationFmedicalItemsId != null" >
+        #{examinationFmedicalItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="drugsId != null" >
+        #{drugsId,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null" >
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="drugsUsage != null" >
+        #{drugsUsage,jdbcType=CHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="actualQuantity != null" >
+        #{actualQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="drugsDispensingStatus != null" >
+        #{drugsDispensingStatus,jdbcType=CHAR},
+      </if>
+      <if test="expenseItemsId != null" >
+        #{expenseItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="days != null" >
+        #{days,jdbcType=INTEGER},
+      </if>
+      <if test="dosage != null" >
+        #{dosage,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.neu.hoso.example.ExaminationDrugsItemsExample" resultType="java.lang.Integer" >
+    select count(*) from examination_drugs_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update examination_drugs_items
+    <set >
+      <if test="record.examinationDrugsItemsId != null" >
+        Examination_Drugs_Items_ID = #{record.examinationDrugsItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examinationFmedicalItemsId != null" >
+        Examination_Fmedical_Items_ID = #{record.examinationFmedicalItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.drugsId != null" >
+        Drugs_ID = #{record.drugsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.doctorId != null" >
+        Doctor_ID = #{record.doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.drugsUsage != null" >
+        Drugs_Usage = #{record.drugsUsage,jdbcType=CHAR},
+      </if>
+      <if test="record.quantity != null" >
+        Quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.actualQuantity != null" >
+        Actual_Quantity = #{record.actualQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.drugsDispensingStatus != null" >
+        Drugs_Dispensing_Status = #{record.drugsDispensingStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.expenseItemsId != null" >
+        Expense_Items_ID = #{record.expenseItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.times != null" >
+        Times = #{record.times,jdbcType=INTEGER},
+      </if>
+      <if test="record.days != null" >
+        Days = #{record.days,jdbcType=INTEGER},
+      </if>
+      <if test="record.dosage != null" >
+        Dosage = #{record.dosage,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update examination_drugs_items
+    set Examination_Drugs_Items_ID = #{record.examinationDrugsItemsId,jdbcType=INTEGER},
+      Examination_Fmedical_Items_ID = #{record.examinationFmedicalItemsId,jdbcType=INTEGER},
+      Drugs_ID = #{record.drugsId,jdbcType=INTEGER},
+      Doctor_ID = #{record.doctorId,jdbcType=INTEGER},
+      Drugs_Usage = #{record.drugsUsage,jdbcType=CHAR},
+      Quantity = #{record.quantity,jdbcType=INTEGER},
+      Actual_Quantity = #{record.actualQuantity,jdbcType=INTEGER},
+      Drugs_Dispensing_Status = #{record.drugsDispensingStatus,jdbcType=CHAR},
+      Expense_Items_ID = #{record.expenseItemsId,jdbcType=INTEGER},
+      Times = #{record.times,jdbcType=INTEGER},
+      Days = #{record.days,jdbcType=INTEGER},
+      Dosage = #{record.dosage,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.neu.hoso.model.ExaminationDrugsItems" >
+    update examination_drugs_items
+    <set >
+      <if test="examinationFmedicalItemsId != null" >
+        Examination_Fmedical_Items_ID = #{examinationFmedicalItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="drugsId != null" >
+        Drugs_ID = #{drugsId,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null" >
+        Doctor_ID = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="drugsUsage != null" >
+        Drugs_Usage = #{drugsUsage,jdbcType=CHAR},
+      </if>
+      <if test="quantity != null" >
+        Quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="actualQuantity != null" >
+        Actual_Quantity = #{actualQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="drugsDispensingStatus != null" >
+        Drugs_Dispensing_Status = #{drugsDispensingStatus,jdbcType=CHAR},
+      </if>
+      <if test="expenseItemsId != null" >
+        Expense_Items_ID = #{expenseItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        Times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="days != null" >
+        Days = #{days,jdbcType=INTEGER},
+      </if>
+      <if test="dosage != null" >
+        Dosage = #{dosage,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where Examination_Drugs_Items_ID = #{examinationDrugsItemsId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectDispensingInExamination" resultMap="BaseResultMap">
+    select examination_drugs_items.*
+    from examination join examination_fmedical_items on examination.Examination_ID=examination_fmedical_items.Examination_ID
+    join examination_drugs_items on examination_fmedical_items.Examination_Fmedical_Items_ID=examination_drugs_items.Examination_Fmedical_Items_ID
+    where examination.Medical_Record_ID=#{Medical_record_ID} and examination_drugs_items.Drugs_ID=#{DrugsId} and examination_drugs_items.Drugs_Dispensing_Status=1 and examination_drugs_items.Expense_Items_ID is not null
+  </select>
+</mapper>

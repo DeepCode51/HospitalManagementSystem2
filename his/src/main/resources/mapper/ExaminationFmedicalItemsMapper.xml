@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.neu.hoso.model.ExaminationFmedicalItemsMapper" >
+  <resultMap id="BaseResultMap" type="edu.neu.hoso.model.ExaminationFmedicalItems" >
+    <constructor >
+      <idArg column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Examination_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Doctor_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Registration_Status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="Purpose_Requirements" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Actual_Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Examination_Result_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Valid_Status" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+  <!--  添加非药品对象的ResultMap by @29-y 2019.06.18 -->
+  <!--  检查检验药品条目列表因没有结果映射需要注释掉 -->
+  <resultMap id="SecondResultMap" type="edu.neu.hoso.model.ExaminationFmedicalItems">
+    <id property="examinationFmedicalItemsId" column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="examinationId" column="Examination_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="fmedicalItemsId" column="Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="doctorId" column="Doctor_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="registrationStatus" column="Registration_Status" jdbcType="CHAR" javaType="java.lang.String" />
+    <result property="purposeRequirements" column="Purpose_Requirements" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <result property="quantity" column="Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="actualQuantity" column="Actual_Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="examinationResultId" column="Examination_Result_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="expenseItemsId" column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="validStatus" column="Valid_Status" jdbcType="CHAR" javaType="java.lang.String" />
+    <association property="fmedicalItems" javaType="edu.neu.hoso.model.FmedicalItems" resultMap="edu.neu.hoso.model.FmedicalItemsMapper.BaseResultMap"/>
+<!--    <collection property="examinationDrugsItemsList" ofType="edu.neu.hoso.model.ExaminationDrugsItems" resultMap="edu.neu.hoso.model.ExaminationDrugsItemsMapper.SecondResultMap"/>-->
+  </resultMap>
+
+  <!--  添加非药品对象的ResultMap by @29-y 2019.06.30 -->
+  <!--  添加执行科室的对象 -->
+  <resultMap id="ThirdResultMap" type="edu.neu.hoso.model.ExaminationFmedicalItems">
+    <id property="examinationFmedicalItemsId" column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="examinationId" column="Examination_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="fmedicalItemsId" column="Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="doctorId" column="Doctor_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="registrationStatus" column="Registration_Status" jdbcType="CHAR" javaType="java.lang.String" />
+    <result property="purposeRequirements" column="Purpose_Requirements" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <result property="quantity" column="Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="actualQuantity" column="Actual_Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="examinationResultId" column="Examination_Result_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="expenseItemsId" column="Expense_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    <result property="validStatus" column="Valid_Status" jdbcType="CHAR" javaType="java.lang.String" />
+    <association property="fmedicalItems" javaType="edu.neu.hoso.model.FmedicalItems" resultMap="edu.neu.hoso.model.FmedicalItemsMapper.BaseResultMap"/>
+    <association property="department" javaType="edu.neu.hoso.model.Department" resultMap="edu.neu.hoso.model.DepartmentMapper.BaseResultMap"/>
+  </resultMap>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Examination_Fmedical_Items_ID, Examination_ID, Fmedical_Items_ID, Doctor_ID, Registration_Status, 
+    Purpose_Requirements, Quantity, Actual_Quantity, Examination_Result_ID, Expense_Items_ID, 
+    Valid_Status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.neu.hoso.example.ExaminationFmedicalItemsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from examination_fmedical_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="edu.neu.hoso.example.ExaminationFmedicalItemsExample" >
+    delete from examination_fmedical_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insertSelective" parameterType="edu.neu.hoso.model.ExaminationFmedicalItems" >
+    <selectKey resultType="java.lang.Integer" keyProperty="examinationFmedicalItemsId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into examination_fmedical_items
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="examinationId != null" >
+        Examination_ID,
+      </if>
+      <if test="fmedicalItemsId != null" >
+        Fmedical_Items_ID,
+      </if>
+      <if test="doctorId != null" >
+        Doctor_ID,
+      </if>
+      <if test="registrationStatus != null" >
+        Registration_Status,
+      </if>
+      <if test="purposeRequirements != null" >
+        Purpose_Requirements,
+      </if>
+      <if test="quantity != null" >
+        Quantity,
+      </if>
+      <if test="actualQuantity != null" >
+        Actual_Quantity,
+      </if>
+      <if test="examinationResultId != null" >
+        Examination_Result_ID,
+      </if>
+      <if test="expenseItemsId != null" >
+        Expense_Items_ID,
+      </if>
+      <if test="validStatus != null" >
+        Valid_Status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="examinationId != null" >
+        #{examinationId,jdbcType=INTEGER},
+      </if>
+      <if test="fmedicalItemsId != null" >
+        #{fmedicalItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null" >
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="registrationStatus != null" >
+        #{registrationStatus,jdbcType=CHAR},
+      </if>
+      <if test="purposeRequirements != null" >
+        #{purposeRequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="actualQuantity != null" >
+        #{actualQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="examinationResultId != null" >
+        #{examinationResultId,jdbcType=INTEGER},
+      </if>
+      <if test="expenseItemsId != null" >
+        #{expenseItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="validStatus != null" >
+        #{validStatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.neu.hoso.example.ExaminationFmedicalItemsExample" resultType="java.lang.Integer" >
+    select count(*) from examination_fmedical_items
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update examination_fmedical_items
+    <set >
+      <if test="record.examinationFmedicalItemsId != null" >
+        Examination_Fmedical_Items_ID = #{record.examinationFmedicalItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examinationId != null" >
+        Examination_ID = #{record.examinationId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fmedicalItemsId != null" >
+        Fmedical_Items_ID = #{record.fmedicalItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.doctorId != null" >
+        Doctor_ID = #{record.doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.registrationStatus != null" >
+        Registration_Status = #{record.registrationStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.purposeRequirements != null" >
+        Purpose_Requirements = #{record.purposeRequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quantity != null" >
+        Quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.actualQuantity != null" >
+        Actual_Quantity = #{record.actualQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.examinationResultId != null" >
+        Examination_Result_ID = #{record.examinationResultId,jdbcType=INTEGER},
+      </if>
+      <if test="record.expenseItemsId != null" >
+        Expense_Items_ID = #{record.expenseItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.validStatus != null" >
+        Valid_Status = #{record.validStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update examination_fmedical_items
+    set Examination_Fmedical_Items_ID = #{record.examinationFmedicalItemsId,jdbcType=INTEGER},
+      Examination_ID = #{record.examinationId,jdbcType=INTEGER},
+      Fmedical_Items_ID = #{record.fmedicalItemsId,jdbcType=INTEGER},
+      Doctor_ID = #{record.doctorId,jdbcType=INTEGER},
+      Registration_Status = #{record.registrationStatus,jdbcType=CHAR},
+      Purpose_Requirements = #{record.purposeRequirements,jdbcType=VARCHAR},
+      Quantity = #{record.quantity,jdbcType=INTEGER},
+      Actual_Quantity = #{record.actualQuantity,jdbcType=INTEGER},
+      Examination_Result_ID = #{record.examinationResultId,jdbcType=INTEGER},
+      Expense_Items_ID = #{record.expenseItemsId,jdbcType=INTEGER},
+      Valid_Status = #{record.validStatus,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.neu.hoso.model.ExaminationFmedicalItems" >
+    update examination_fmedical_items
+    <set >
+      <if test="examinationId != null" >
+        Examination_ID = #{examinationId,jdbcType=INTEGER},
+      </if>
+      <if test="fmedicalItemsId != null" >
+        Fmedical_Items_ID = #{fmedicalItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null" >
+        Doctor_ID = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="registrationStatus != null" >
+        Registration_Status = #{registrationStatus,jdbcType=CHAR},
+      </if>
+      <if test="purposeRequirements != null" >
+        Purpose_Requirements = #{purposeRequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        Quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="actualQuantity != null" >
+        Actual_Quantity = #{actualQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="examinationResultId != null" >
+        Examination_Result_ID = #{examinationResultId,jdbcType=INTEGER},
+      </if>
+      <if test="expenseItemsId != null" >
+        Expense_Items_ID = #{expenseItemsId,jdbcType=INTEGER},
+      </if>
+      <if test="validStatus != null" >
+        Valid_Status = #{validStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where Examination_Fmedical_Items_ID = #{examinationFmedicalItemsId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateRegistrationStatus">
+      update examination natural join examination_fmedical_items natural join fmedical_items
+      <set>
+        examination_fmedical_items.Registration_Status = 2
+      </set>
+    where examination.Medical_Record_ID=#{Medical_record_ID} and fmedical_items.Department_ID=#{Department_ID} and examination_fmedical_items.Registration_Status=1
+  </update>
+    
+
+
+<!--&#45;&#45;        select *,examination_fmedical_items.Quantity as ExaminationQuantity, examination_fmedical_items.Actual_Quantity as ExaminationActualQuantity-->
+<!--&#45;&#45; from examination JOIN examination_fmedical_items ON examination.Examination_ID=examination_fmedical_items.Examination_ID-->
+<!--&#45;&#45; 								 JOIN fmedical_items ON examination_fmedical_items.Fmedical_Items_ID=fmedical_items.Fmedical_Items_ID-->
+<!--&#45;&#45; 								 JOIN examination_drugs_items ON examination_fmedical_items.Examination_Fmedical_Items_ID=Examination_Drugs_Items.Examination_Fmedical_Items_ID-->
+<!--&#45;&#45; 								 JOIN drugs ON examination_drugs_items.Drugs_ID=drugs.Drugs_ID-->
+<!--&#45;&#45; where examination.Medical_Record_ID=1111 and fmedical_items.Department_ID=133-->
+
+  <select id="getAllFmedical" resultMap="ExaminationAndFmedical">
+--     select examination.Doctor_Advice,examination.Doctor_ID as examinationDoctorID,examination.Examination_ID,examination.Examination_Mark,examination.Medical_Record_ID,examination.Submit_Time, examination_fmedical_items.Actual_Quantity as examinationFmedicalItemsActualQuantity,examination_fmedical_items.Doctor_ID as examinationFmedicalItemsDoctorID, examination_fmedical_items.Examination_Fmedical_Items_ID, examination_fmedical_items.Examination_ID,examination_fmedical_items.Examination_Result_ID,examination_fmedical_items.Expense_Items_ID as examinationFmedicalItemsExpenseItemsID,examination_fmedical_items.Fmedical_Items_ID as examinationFmedicalItemsFmedicalItemsID,examination_fmedical_items.Purpose_Requirements,examination_fmedical_items.Quantity as examinationFmedicalItemsQuantity,examination_fmedical_items.Registration_Status,examination_fmedical_items.Valid_Status, fmedical_items.Create_Time as fmedicalItemsCreatTime,fmedical_items.Department_ID as fmedicalItemsDepartmentID,fmedical_items.Expense_Type_ID as fmedicalItemsExpenseTypeID,fmedical_items.Fmedical_Items_Code, fmedical_items.Fmedical_Items_Format,fmedical_items.Fmedical_Items_ID as fmedicalItemsFmedicalItemsID,fmedical_items.Fmedical_Items_MnemonicCode,fmedical_items.Fmedical_Items_Name, fmedical_items.Fmedical_Items_Price,fmedical_items.Fmedical_Items_Type, examination_drugs_items.Actual_Quantity as examinationDrugsItemsActualQuantity,examination_drugs_items.Days,examination_drugs_items.Doctor_ID as examinationDrugsItemsDoctorID,examination_drugs_items.Dosage,examination_drugs_items.Drugs_Dispensing_Status,examination_drugs_items.Drugs_ID as examinationDrugsItemsDrugsID,examination_drugs_items.Drugs_Usage,examination_drugs_items.Examination_Drugs_Items_ID,examination_drugs_items.Examination_Fmedical_Items_ID,examination_drugs_items.Expense_Items_ID as examinationDrugsItemsExpenseItemsID,examination_drugs_items.Quantity as examinationDrugsItemsQuantity,examination_drugs_items.Times, drugs.*
+
+ select examination.Doctor_Advice,examination.Doctor_ID as examinationDoctorID,examination.Examination_ID as examinationExaminationID,examination.Examination_Mark,examination.Medical_Record_ID,examination.Submit_Time, examination_fmedical_items.Actual_Quantity as examinationFmedicalItemsActualQuantity,examination_fmedical_items.Doctor_ID as examinationFmedicalItemsDoctorID, examination_fmedical_items.Examination_Fmedical_Items_ID, examination_fmedical_items.Examination_ID as examinationFmedicalItemsExaminationID,examination_fmedical_items.Examination_Result_ID,examination_fmedical_items.Expense_Items_ID as examinationFmedicalItemsExpenseItemsID,examination_fmedical_items.Fmedical_Items_ID as examinationFmedicalItemsFmedicalItemsID,examination_fmedical_items.Purpose_Requirements,examination_fmedical_items.Quantity as examinationFmedicalItemsQuantity,examination_fmedical_items.Registration_Status,examination_fmedical_items.Valid_Status, fmedical_items.Create_Time as fmedicalItemsCreatTime,fmedical_items.Department_ID as fmedicalItemsDepartmentID,fmedical_items.Expense_Type_ID as fmedicalItemsExpenseTypeID,fmedical_items.Fmedical_Items_Code, fmedical_items.Fmedical_Items_Format,fmedical_items.Fmedical_Items_ID as fmedicalItemsFmedicalItemsID,fmedical_items.Fmedical_Items_MnemonicCode,fmedical_items.Fmedical_Items_Name, fmedical_items.Fmedical_Items_Price,fmedical_items.Fmedical_Items_Type, examination_drugs_items.Actual_Quantity as examinationDrugsItemsActualQuantity,examination_drugs_items.Days,examination_drugs_items.Doctor_ID as examinationDrugsItemsDoctorID,examination_drugs_items.Dosage,examination_drugs_items.Drugs_Dispensing_Status,examination_drugs_items.Drugs_ID as examinationDrugsItemsDrugsID,examination_drugs_items.Drugs_Usage,examination_drugs_items.Examination_Drugs_Items_ID,examination_drugs_items.Examination_Fmedical_Items_ID,examination_drugs_items.Expense_Items_ID as examinationDrugsItemsExpenseItemsID,examination_drugs_items.Quantity as examinationDrugsItemsQuantity,examination_drugs_items.Times, drugs.*
+    from examination JOIN examination_fmedical_items ON examination.Examination_ID=examination_fmedical_items.Examination_ID
+      JOIN fmedical_items ON examination_fmedical_items.Fmedical_Items_ID=fmedical_items.Fmedical_Items_ID
+      LEFT JOIN examination_drugs_items ON examination_fmedical_items.Examination_Fmedical_Items_ID=examination_drugs_items.Examination_Fmedical_Items_ID
+      LEFT JOIN drugs ON examination_drugs_items.Drugs_ID=drugs.Drugs_ID
+    where examination.Medical_Record_ID=#{Medical_record_ID} and fmedical_items.Department_ID=#{Department_ID}
+   </select>
+
+    <resultMap id="ExaminationAndFmedical" type="edu.neu.hoso.model.ExaminationFmedicalItems">
+      <id column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationFmedicalItemsId"/>
+      <result column="examinationFmedicalItemsExaminationID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationId"/>
+      <result column="Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="fmedicalItemsId"/>
+      <result column="Doctor_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="doctorId"/>
+      <result column="Registration_Status" jdbcType="CHAR" javaType="java.lang.String" property="registrationStatus"/>
+      <result column="Purpose_Requirements" jdbcType="VARCHAR" javaType="java.lang.String" property="purposeRequirements"/>
+      <result column="Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" property="quantity"/>
+      <result column="Actual_Quantity" jdbcType="INTEGER" javaType="java.lang.Integer" property="actualQuantity"/>
+      <result column="Examination_Result_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationResultId"/>
+      <result column="examinationFmedicalItemsExpenseItemsID" jdbcType="INTEGER" javaType="java.lang.Integer" property="expenseItemsId"/>
+      <result column="Valid_Status" jdbcType="CHAR" javaType="java.lang.String" property="validStatus"/>
+        <!--<id column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationFmedicalItemsId"/>-->
+        <!--<result column="Examination_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationId"/>-->
+        <!--<result column="Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="fmedicalItemsId"/>-->
+        <!--<result column="examinationFmedicalItemsDoctorID" jdbcType="INTEGER" javaType="java.lang.Integer" property="doctorId "/>-->
+        <!--<result column="Registration_Status" jdbcType="CHAR" javaType="java.lang.String" property="registrationStatus"/>-->
+        <!--<result column="Purpose_Requirements" jdbcType="VARCHAR" javaType="java.lang.String" property="purposeRequirements"/>-->
+        <!--<result column="examinationFmedicalItemsQuantity" jdbcType="INTEGER" javaType="java.lang.Integer" property="quantity"/>-->
+        <!--<result column="examinationFmedicalItemsActualQuantity" jdbcType="INTEGER" javaType="java.lang.Integer" property="actualQuantity"/>-->
+        <!--<result column="Examination_Result_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationResultId"/>-->
+        <!--<result column="examinationFmedicalItemsExpenseItemsID" jdbcType="INTEGER" javaType="java.lang.Integer" property="expenseItemsId"/>-->
+        <!--<result column="Valid_Status" jdbcType="CHAR" javaType="java.lang.String" property="validStatus"/>-->
+        <!--<association property="fmedicalItems" javaType="edu.neu.hoso.model.FmedicalItems" resultMap="edu.neu.hoso.model.FmedicalItemsMapper.BaseResultMap"/>-->
+      <association property="fmedicalItems" javaType="edu.neu.hoso.model.FmedicalItems">
+        <id column="Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="fmedicalItemsId"/>
+        <result column="Fmedical_Items_Code" jdbcType="VARCHAR" javaType="java.lang.String" property="fmedicalItemsCode"/>
+        <result column="Fmedical_Items_Name" jdbcType="VARCHAR" javaType="java.lang.String" property="fmedicalItemsName"/>
+        <result column="Fmedical_Items_Format" jdbcType="VARCHAR" javaType="java.lang.String" property="fmedicalItemsFormat"/>
+        <result column="Fmedical_Items_Price" jdbcType="DOUBLE" javaType="java.lang.Double" property="fmedicalItemsPrice"/>
+        <result column="Expense_Type_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="expenseTypeId"/>
+        <result column="Department_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="departmentId"/>
+        <result column="Fmedical_Items_MnemonicCode" jdbcType="VARCHAR" javaType="java.lang.String" property="fmedicalItemsMnemoniccode"/>
+        <result column="Fmedical_Items_Type" jdbcType="CHAR" javaType="java.lang.String" property="fmedicalItemsType"/>
+        <result column="Create_Time" jdbcType="DATE" javaType="java.util.Date" property="createTime"/>
+        <result column="Reverse1" jdbcType="VARCHAR" javaType="java.lang.String" property="reverse1"/>
+        <result column="Reverse2" jdbcType="VARCHAR" javaType="java.lang.String" property="reverse2"/>
+        <result column="Reverse3" jdbcType="VARCHAR" javaType="java.lang.String" property="reverse3"/>
+      </association>
+      <collection property="examinationDrugsItemsList" ofType="edu.neu.hoso.model.ExaminationDrugsItems">
+        <id column="Examination_Drugs_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationDrugsItemsId"/>
+        <result column="Examination_Fmedical_Items_ID" jdbcType="INTEGER" javaType="java.lang.Integer" property="examinationFmedicalItemsId"/>
+        <result column="examinationDrugsItemsDrugsID" jdbcType="INTEGER" javaType="java.lang.Integer" property="drugsId"/>
+        <result column="examinationDrugsItemsDoctorID" jdbcType="INTEGER" javaType="java.lang.Integer" property="doctorId"/>
+        <result column="Drugs_Usage" jdbcType="CHAR" javaType="java.lang.String" property="drugsUsage"/>
+        <result column="examinationDrugsItemsQuantity" jdbcType="INTEGER" javaType="java.lang.Integer" property="quantity"/>
+        <result column="examinationDrugsItemsActualQuantity" jdbcType="INTEGER" javaType="java.lang.Integer" property="actualQuantity"/>
+        <result column="Drugs_Dispensing_Status" jdbcType="CHAR" javaType="java.lang.String" property="drugsDispensingStatus"/>
+        <result column="examinationDrugsItemsExpenseItemsID" jdbcType="INTEGER" javaType="java.lang.Integer" property="expenseItemsId"/>
+        <result column="Times" jdbcType="INTEGER" javaType="java.lang.Integer" property="times"/>
+        <result column="Days" jdbcType="INTEGER" javaType="java.lang.Integer" property="days"/>
+        <result column="Dosage" jdbcType="DOUBLE" javaType="java.lang.Double" property="dosage"/>
+        <association property="drugs" javaType="edu.neu.hoso.model.Drugs" resultMap="edu.neu.hoso.model.DrugsMapper.BaseResultMap"/>
+      </collection>
+    </resultMap>
+</mapper>
